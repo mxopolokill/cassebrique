@@ -76,15 +76,17 @@ class Missile extends Pellet{
     ctx.fillStyle="#FFFFFF";
     ctx.closePath();
   }
+  ////////////////////////////////////////////////////////////////
+  // test si le missile est à la position de départ//////////////
+  isAtStartingPos(){                                        ////
+    return this.posy == this.gameboard.getCursorPosY();     ////
+  }////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////
 
-  /*Teste si le missile est à la position de départ*/
-  isAtStartingPos(){
-    return this.posy == this.gameboard.getCursorPosY();
-  }
 
-  isOut(){
-    return true; //Fait en sorte que le joueur perds même si il lui reste des 
-    //missiles
-  }
-
-}
+  ////////////////////////////////////////////////////////////////////////////////////
+  isOut(){                                                                        ///
+    return true; //Fait en sorte que le joueur perds même si il lui reste des     ///
+    //missiles                                                                    //
+  }/////////////////////////////////////////////////////////////////////////////////
+}///////////////////////////////////////////////////////////////////////////////////

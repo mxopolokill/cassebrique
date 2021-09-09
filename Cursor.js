@@ -1,6 +1,9 @@
 const INPUT_DELAY = 5;
 const MAX_SPEED = 5;
 const ENLARGE_BONUS = 100;
+//insertion image PADDLE
+let imgpaddle = new Image();
+imgpaddle.src = 'img/paddle/paddle.png';
 
 class Cursor{
 
@@ -62,7 +65,7 @@ class Cursor{
     var ctx = this.gameboard.disp.getContext("2d");
     ctx.beginPath();
     ctx.rect(this.posx,this.posy,this.sizex,this.sizey);
-    ctx.fillStyle = "purple";
+    
     ctx.fill();
     ctx.stroke();
     ctx.closePath();

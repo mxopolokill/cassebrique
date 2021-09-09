@@ -12,6 +12,7 @@ class Brick{
     /*-----------------------------------*/
     this.display();
   }
+  
   /*Affichage de la brique */
   display(){
     if(this.lives != 0){

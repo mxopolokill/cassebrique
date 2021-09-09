@@ -1,214 +1,254 @@
-class Board{
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//création classe board//////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Board{                                                                                                 ///
+ //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  constructor(posx, posy, sizex, sizey){                                                                   ///
+    this.bricks; //Nombre de briques (pas encore défini)                                                  ///
+    this.bricksArray = []; //Déclaration d'un tableau de briques                                         ///
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+    this.pellets = 1; //Nombre de balles                                                              ///
+    this.pelletsArray = []; //Déclaration d'un tableau de balles                                     ///
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    this.bonus = 0;//Nombre de bonus                                                               ///
+    this.bonusArray = [];//Déclaration d'un tableau de bonus                                      ///
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    this.posx = posx; //Position sur la page en x                                               ///
+    this.posy = posy; //Position sur la page en y                                              ///
+    /////////////////////////////////////////////////////////////////////////////////////////////
+    this.sizex = sizex; //Largeur de la grille                                               ///
+    this.sizey = sizey; //Hauteur de la grille                                              ///
+    //////////////////////////////////////////////////////////////////////////////////////////
+    this.disp = document.getElementById("can");//récuperation élement HTML via ID         ///
+    this.disp.height = window.innerHeight;//hauteur fenetre                              ///
+    this.disp.width = window.innerWidth;//largeur fenetre                               ///
+    this.cursor = new Cursor(this.sizex/6, this);// ajout paddle                       ///
+    /////////////////////////////////////////////////////////////////////////////////////
+    var board = this; // Obligatoire car "this" ne référence plus cet objet          ///
+    ///////////////quand on rentre dans la fonction anonyme///////////////////////////////////////////////////////////////
+    document.addEventListener("keydown",function(e){board.inputDown(e);});//touche clavier presser             ///////////
+    document.addEventListener("keyup", function(e){board.inputUp(e);});//touche clavier non presser            ///////////
+    this.keypressed = "";                                                                                      ///////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    this.score = 0; //Score                                                                                            ///
+    this.scorePrint = 0; //Permet de savoir si le score est déjà sauvegardé                                            ///
+    this.started = 0;   //état de jeu de 0 à 5                                                                         ///
+    this.select = 2;    // Position du curseur dans les menus                                                          ///   
+    this.name = "";     // nom du joueur                                                                               ///
+    this.lives;         //info vie                                                                                     ///
+    this.info;          // Barre d'info                                                                                ///
+    this.nbSound = 0;   // Id du prochain son à ajouter                                                                ///
+    this.music = 1;     // Musique active ou non                                                                       ///
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    this.printNameScreen();//ajout du nom selectionner                                                                 ///
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  }///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  constructor(posx, posy, sizex, sizey){
-    this.bricks; //Nombre de briques (pas encore défini)
-    this.bricksArray = []; //Déclaration d'un tableau de briques
-    /*---------------------------------------*/
-    /*---------------------------------------*/
-    this.pellets = 1; //Nombre de balles
-    this.pelletsArray = []; //Déclaration d'un tableau de balles
-    /*---------------------------------------*/
-    this.bonus = 0;//Nombre de bonus
-    this.bonusArray = [];//Déclaration d'un tableau de bonus
-    /*---------------------------------------*/
-    this.posx = posx; //Position sur la page en x
-    this.posy = posy; //Position sur la page en y
-    /*---------------------------------------*/
-    this.sizex = sizex; //Largeur de la grille
-    this.sizey = sizey; //Hauteur de la grille
-    /*---------------------------------------*/
-    this.disp = document.getElementById("can");
-    this.disp.height = window.innerHeight;
-    this.disp.width = window.innerWidth;
-    this.cursor = new Cursor(this.sizex/6, this);
-    /*---------------------------------------*/
-    var board = this; /* Obligatoire car "this" ne référence plus cet objet
-    quand on rentre dans la fonction anonyme*/
-    document.addEventListener("keydown",function(e){board.inputDown(e);});
-    document.addEventListener("keyup", function(e){board.inputUp(e);});
-    this.keypressed = "";
-    /*---------------------------------------*/
-    this.score = 0; //Score
-    this.scorePrint = 0; //Permet de savoir si le score est déjà sauvegardé
-    this.started = 0;   //état de jeu de 0 à 5
-    this.select = 2;    // Position du curseur dans les menus
-    this.name = "";     // nom du joueur
-    this.lives;
-    this.info;          // Barre d'info
-    this.nbSound = 0;   // Id du prochain son à ajouter
-    this.music = 1;     // Musique active ou non
-    /*---------------------------------------*/
-    this.printNameScreen();
 
-  }
-
-  //Affiche l'écran de choix de Pseudo
-  printNameScreen(){
-    var ctx = this.disp.getContext("2d");
-    ctx.beginPath();
-    ctx.rect(this.posx, this.posy, this.sizex, this.sizey);
-    ctx.fillStyle = "#222222";
-    ctx.fill();
-    ctx.stroke();
-
-    var fontSize = this.sizey /10 ;
-
-    ctx.fillStyle = "#ffffff";
-    ctx.strokeStyle = "#ffffff";
-    ctx.font = fontSize + "px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("Enter your name :",this.posx + this.sizex/2,
-      this.posy + this.sizey/2);
-    ctx.fillText(this.name,this.posx + this.sizex/2,
-      this.posy + this.sizey/2 + fontSize);
-    ctx.closePath();
-  }
-
-  //Affiche l'écran de choix de difficulté (sans curseur)
-  printStartScreen(){
-    var ctx = this.disp.getContext("2d");
-    ctx.beginPath();
-    ctx.rect(this.posx, this.posy, this.sizex, this.sizey);
-    ctx.fillStyle = "#222222";
-    ctx.fill();
-    ctx.stroke();
-
-    var fontSize = this.sizey/10;
-
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
-    ctx.font = fontSize + "px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("Choose your level!",this.posx + this.sizex/2 ,
-      this.posy + this.sizey/4);
-    ctx.fillText("Easy",this.posx + this.sizex/2 ,
-      this.posy + this.sizey/2);
-    ctx.fillText("Medium",this.posx + this.sizex/2 ,
-      this.posy + this.sizey/2 + fontSize*2);
-    ctx.fillText("Hard",this.posx + this.sizex/2 ,
-      this.posy + this.sizey/2 + fontSize*4);
-    ctx.closePath();
-  }
-
-  //affiche le curseur ou valide le choix de l'utilisateur dans les 2 menus
-  startScreenLoop(e){
-    switch(e){
-      case "select":{
-        if(this.started==1){
-	  this.setup(this.select);
-          this.select = 2;
-          this.info = new Info(this);
-	  this.started=2;
-        }
-        else if(this.started==5){
-          if(this.select==1){
-            this.restart(1);
-          }
-           else if(this.select==2){
-            this.restart(0);
-          }
-        }
-	return;
-      }
-      case "up":{
-	if(this.select>1){
-	  this.select--;
-	}
-	break;
-      }
-      case "down":{
-	if((this.select<3 && this.started==1) || (this.select<2 && this.started==5)){
-	  this.select++;
-	}
-	break;
-      }
-    }
-    var ctx = this.disp.getContext("2d");
-    var fontSize = this.sizey/10;
-    ctx.beginPath();
-    ctx.moveTo(this.posx + this.sizex/5,
-      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2 - fontSize/4);
-    ctx.lineTo(this.posx + this.sizex/6,
-      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2);
-    ctx.moveTo(this.posx + this.sizex/5,
-      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2 - fontSize/4);
-    ctx.lineTo(this.posx + this.sizex/6,
-      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2 - fontSize/2);
-    ctx.lineTo(this.posx + this.sizex/6,
-      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2);
-    ctx.lineWidth = 3;
-    ctx.stroke();
-    ctx.lineWidth = 0.5;
-    ctx.closePath();
-  }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Affiche l'écran de choix de Pseudo////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  printNameScreen(){                                                                                             ///
+    var ctx = this.disp.getContext("2d");//ajout du contexte                                                    ///
+    ctx.beginPath();//ouverture chemin                                                                         ///
+    ctx.rect(this.posx, this.posy, this.sizex, this.sizey);//dessin rectangle                                 ///
+    ctx.fillStyle = "#222222";//remplissage via couleur                                                      ///
+    ctx.fill();//remplissage                                                                                ///
+    ctx.stroke();//dessine chemin actuelle                                                                 ///
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var fontSize = this.sizey /10 ;// changement taille texte                                            ///
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ctx.fillStyle = "#ffffff"; //remplissage via couleur                                               ///
+    ctx.strokeStyle = "#ffffff"; //dessine chemin avec remplissage d'un couleur spécifique            ///
+    ctx.font = fontSize + "px Arial";// changement style de police                                   ///
+    ctx.textAlign = "center";// alignement du texte au centre                                       ////////
+    ctx.fillText("Enter your name :",this.posx + this.sizex/2, //remplissage de l'élement avec du texte ///
+      this.posy + this.sizey/2);// position et taille                                              ///////
+    ctx.fillText(this.name,this.posx + this.sizex/2, // remplissage                               ///
+      this.posy + this.sizey/2 + fontSize); // position et taille                                ///
+    ctx.closePath();//fermeture chemin                                                          ///
+  }///////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Affiche l'écran de choix de difficulté (sans curseur)///////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////
+  printStartScreen(){                                                                                  ///
+    var ctx = this.disp.getContext("2d"); //choix contexte                                            ///
+    ctx.beginPath();// ouverture chemin                                                              ///
+    ctx.rect(this.posx, this.posy, this.sizex, this.sizey);//création d'un bloc                     ///
+    ctx.fillStyle = "#222222"; //remplissage avec couleur                                          ///
+    ctx.fill();// remplissage chemin                                                              /// 
+    ctx.stroke();//dessine chemin actuellement crée                                              ///
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+    var fontSize = this.sizey/10;// changement taille texte                                    ///
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////////////
+    ctx.fillStyle = "white";//remplissage avec couleur                                      ///
+    ctx.strokeStyle = "white"; //dessine chemin avec remplissage d'un couleur spécifique   ///
+    ctx.font = fontSize + "px Arial";// changement style de police d'"écriture"           ///
+    ctx.textAlign = "center"; // alignement du texte au centre                           ///////////////////////
+    ctx.fillText("Choose your level!",this.posx + this.sizex/2 ,  //remplissage de l'élement avec du texte  ///
+      this.posy + this.sizey/4); // position et taille                                                     ///
+    ctx.fillText("Easy",this.posx + this.sizex/2 ,  //remplissage de l'élement avec du texte              ///
+      this.posy + this.sizey/2); // position et taille                                                   ///
+    ctx.fillText("Medium",this.posx + this.sizex/2 ,  //remplissage de l'élement avec du texte          ///
+      this.posy + this.sizey/2 + fontSize*2); // position et taille                                    ///
+    ctx.fillText("Hard",this.posx + this.sizex/2 ,  //remplissage de l'élement avec du texte          ///
+      this.posy + this.sizey/2 + fontSize*4); // position et taille                                  ///
+    ctx.closePath();//fermeture chemin                                                              ///
+  }///////////////////////////////////////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-  /* Préparation du jeu et de la difficulté (affecte le nombre de briques
-   * et le tableau de briques */
 
-  setup(lvl){
-    var level = new Level(this);
-    for(var i=0;i<this.pellets;i++){
-      this.pelletsArray[i] = new Pellet(this);
-    }
-    level.setupLevel(lvl);
-    this.lives=3;
-  }
+  ///////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////////
+  //affiche le curseur ou valide le choix de l'utilisateur dans les 2 menus////////////
+  ////////////////////////////////////////////////////////////////////////////////////
+  startScreenLoop(e){                                                              ///
+    // ouverture switch//////////////////////////////////////////////////////////////
+    switch(e){                                                                   ///
+      case "select":{                                                           ///
+        if(this.started==1){                                                   ///
+	  this.setup(this.select);                                                  ///
+          this.select = 2;                                                   ///
+          this.info = new Info(this);                                       ///
+	  this.started=2;                                                        ///
+        }////////////////////////////////////////////////////////////////////
+        else if(this.started==5){                                         ///
+          if(this.select==1){                                             ///
+            this.restart(1);                                              ///
+          }//////////////////////////////////////////////////////////////////
+           else if(this.select==2){                                       ///
+            this.restart(0);                                              ///
+          }//////////////////////////////////////////////////////////////////
+        }////////////////////////////////////////////////////////////////////
+	return;                                                                 ///
+      }/////////////////////////////////////////////////////////////////////
+      case "up":{                                                        ///
+	if(this.select>1){                                                    ///
+	  this.select--;                                                     ///
+	}//////////////////////////////////////////////////////////////////////
+	break;                                                             ///
+      }/////////////////////////////////////////////////////////////////
+      case "down":{                                                 ///////////////////////////
+	if((this.select<3 && this.started==1) || (this.select<2 && this.started==5)){             ///
+	  this.select++;                                                                           ///
+	}////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	break;                                                                                                    ///
+      }////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }//////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var ctx = this.disp.getContext("2d");//choix contexte                                                   ///
+    var fontSize = this.sizey/10; // changement style de police                                             ///
+    ctx.beginPath();//ouverture chemin                                                                      ///
+    ctx.moveTo(this.posx + this.sizex/5,//déplacement chemin                                                //////////////////
+      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2 - fontSize/4);// modificitaion position et t'aille font      ///
+    ctx.lineTo(this.posx + this.sizex/6,// connexion du chemin                                                             ///
+      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2);// modificitaion position et t'aille font                   ///  
+    ctx.moveTo(this.posx + this.sizex/5,//déplacement chemin                                                               ///
+      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2 - fontSize/4);// modificitaion position et t'aille font      ///
+    ctx.lineTo(this.posx + this.sizex/6,// connexion du chemin                                                             ///
+      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2 - fontSize/2);// modificitaion position et t'aille font      ///
+    ctx.lineTo(this.posx + this.sizex/6,// connexion du chemin                                                            ///
+      this.posy + (this.select-1)*(fontSize*2) + this.sizey/2);                                                          ///
+    ctx.lineWidth = 3;// Largeur  de la ligne                                                                           ///
+    ctx.stroke();//dessine le chemin                                                                                   ///
+    ctx.lineWidth = 0.5;//largeur de la ligne                                                                         ///
+    ctx.closePath();//fermeture chemin                                                                               ///
+  }////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  /*Affichage de la zone de jeu et des éléments du jeu*/
-  display(){
-    if(this.testPellets()){
-      if(this.lives==1)
-	this.printLoseScreen();
-      else{
-	this.lives--;
-	this.pelletsArray[this.pellets++]= new Pellet(this);
-	this.cursor.sticky = true;
-	this.cursor.stickyTime = 500;
-        this.info.supprLives();
-      }
-    }
-    else if(!this.testBricks()){
-      var ctx = this.disp.getContext("2d");
-      ctx.beginPath();
-      ctx.rect(this.posx, this.posy, this.sizex, this.sizey);
-      ctx.fillStyle = "#222222";
-      ctx.fill();
-      ctx.stroke();
-      ctx.closePath();
-      /* Affichage du curseur */
-      this.cursor.display();
-      this.displayBricks();
-      this.displayPellets();
-      this.displayBonus();
-      this.info.display();
-    }
-    else{
-      this.printWinScreen();
-    }
-  }
 
-  /* Affichage des briques */
-  displayBricks(){
-    for(var i=0;i<this.bricks;i++){
-      this.bricksArray[i].display();
-    }
+  ////////////////////////////////////////////////////////////////////////////
+  //Préparation du jeu et de la difficulté (affecte le nombre de briques//////
+  //et le tableau de briques /////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  setup(lvl){                                                              ///
+    var level = new Level(this);// créatio variable Level                  ///
+    for(var i=0;i<this.pellets;i++){                                       ///
+      this.pelletsArray[i] = new Pellet(this);                             ///
+    }                                                                      ///
+    level.setupLevel(lvl);                                                 ///
+    this.lives=3;//ajout 3 vies du paddle                                  ///                          
+  }///////////////////////////////////////////////////////////////////////////
 
-  }
-  /* Vérifie si toutes les briques ont été détruites */
-  testBricks(){
-    var test=1;
-    for(var i=0;i<this.bricks;i++){
-      test = this.bricksArray[i].isDead();
-      if(!test){
-	break;
-      }
-    }
-    return test;
-  }
+
+
+
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  //Affichage de la zone de jeu et des éléments du jeu///////////////////////
+  //////////////////////////////////////////////////////////////////////////
+    display(){                                                          ///
+      if(this.testPellets()){                                          ///
+      if(this.lives==1)                                               ///
+	     this.printLoseScreen();                                       ///
+      else{                                                         ///
+	      this.lives--;                                              ///
+	      this.pelletsArray[this.pellets++]= new Pellet(this);      ///
+	      this.cursor.sticky = true;                               ///
+	      this.cursor.stickyTime = 500;                           ///
+          this.info.supprLives();                              ///
+        }                                                     ///
+    }//////////////////////////////////////////////////////////////////////
+    else if(!this.testBricks()){                                        ///
+      var ctx = this.disp.getContext("2d");                             ///
+      ctx.beginPath();                                                  ///
+      ctx.rect(this.posx, this.posy, this.sizex, this.sizey);           ///
+      ctx.fillStyle = "#222222";                                        ///
+      ctx.fill();                                                       ///
+      ctx.stroke();                                                     ///
+      ctx.closePath();                                                  ///
+      //Affichage du curseur///////////////////////////////////////////////                     
+      this.cursor.display();                                            ///
+      this.displayBricks();                                             ///
+      this.displayPellets();                                            ///
+      this.displayBonus();                                              ///
+      this.info.display();                                              ///
+    }//////////////////////////////////////////////////////////////////////
+    else{                                                               ///
+      this.printWinScreen();                                            ///
+    }                                                                   ///
+  }////////////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////
+  //Affichage des briques ///////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////
+  displayBricks(){                                                  ///
+    for(var i=0;i<this.bricks;i++){                               ///
+      this.bricksArray[i].display();                              ///
+    } /////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////
+  }//////////////////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  ///Vérifie si toutes les briques ont été détruites/////////////
+  testBricks(){                                              ///
+    var test=1;                                             ///
+    for(var i=0;i<this.bricks;i++){                        ///
+      test = this.bricksArray[i].isDead();                ///
+      if(!test){                                         ///
+	break;                                                ///
+      }/////////////////////////////////////////////////
+    }//////////////////////////////////////////////////
+    return test;                                     ///
+  }/////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////
 
   // Renvoie 0 si il reste une balle et 1 sinon
   testPellets(){
@@ -242,8 +282,8 @@ class Board{
     this.bonusArray.push(b);
   }
 
-  /* Ces deux fonctions donnent la taille d'une brique dans la grille (c'était plus
-   * pratique de mettre ces méthodes dans board plutôt que dans brick */
+  // Ces deux fonctions donnent la taille d'une brique dans la grille //
+  //(c'était plus pratique de mettre ces méthodes dans board plutôt que dans brick //
 
   getBrickSizeX(x){
     return this.sizex/x;
@@ -295,24 +335,24 @@ class Board{
 
   //Affiche l'écran de pause du jeu
   printPauseScreen(){
-    var ctx = this.disp.getContext("2d");
-    ctx.beginPath();
-    ctx.rect(this.posx + this.sizex*0.1, this.posy + this.sizey*0.1, this.sizex*0.8, this.sizey*0.8);
-    ctx.fillStyle = "#666666";
-    ctx.fill();
-    ctx.stroke();
-    ctx.fillStyle = "#ffffff"
-    ctx.strokeStyle = "#ffffff";
-    var fontSize = this.sizey/10; 
-    ctx.font = fontSize + "px Arial";
-    ctx.textAlign = "center";
-    var txt;
+    var ctx = this.disp.getContext("2d");// choix contexte
+    ctx.beginPath();//ouverture chemin 
+    ctx.rect(this.posx + this.sizex*0.1, this.posy + this.sizey*0.1, this.sizex*0.8, this.sizey*0.8);//création bloc 
+    ctx.fillStyle = "#666666";// remplissage couleur 
+    ctx.fill();// remplissage
+    ctx.stroke();//dessinne 
+    ctx.fillStyle = "#ffffff"//choix couleur remplissage
+    ctx.strokeStyle = "#ffffff";//dessine avec couleur de remplissage spécifique 
+    var fontSize = this.sizey/10; // taille d'ecriture 
+    ctx.font = fontSize + "px Arial";//format d'écriture
+    ctx.textAlign = "center";//alignement du texte au centre
+    var txt;// variable txt  choix entre son activé ou désactiver//
     if(this.music)
-      txt = "ON"
+      txt = "ON"// activation de l'audio 
     else
-      txt = "OFF"
-    ctx.fillText("Musique :" + txt,this.posx + this.sizex/2,this.posy + this.sizey/2 + fontSize/4);
-    ctx.closePath();
+      txt = "OFF"// désactivation de l'audio 
+    ctx.fillText("Musique :" + txt,this.posx + this.sizex/2,this.posy + this.sizey/2 + fontSize/4);// ajout texte
+    ctx.closePath();// fermeture chemin 
   }
 
   /* Fonction qui efface l'affichage*/
@@ -346,12 +386,16 @@ class Board{
     }
   }
 
+  ///////////////////////////////////////////////////////////////////////////
+  /// Fonction qui déplace le curseur en fonction d'un pression de touche ///
+  ///////////////////////////////////////////////////////////////////////////
+   getInput(e){                                                            //
+     this.cursor.moveCursor(e);                                            //
+    }                                                                      //
+  ///////////////////////////////////////////////////////////////////////////
 
-  /* Fonction qui déplace le curseur en fonction d'un pression de touche */
 
-  getInput(e){
-    this.cursor.moveCursor(e);
-  }
+
   /* Affiche l'écran de victoire */
   printWinScreen(){
     var ctx = this.disp.getContext("2d");
@@ -619,9 +663,9 @@ class Board{
     ctx.strokeStyle = "white";
     ctx.font = fontSize + "px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("Restart Option :",this.posx + this.sizex/2 ,this.posy + this.sizey/4);
-    ctx.fillText("Restart with same name",this.posx + this.sizex/2 ,this.posy + this.sizey/2);
-    ctx.fillText("Restart and choose name",this.posx + this.sizex/2 ,this.posy + this.sizey/2 + fontSize*2);
+    ctx.fillText("options de redémarrage :",this.posx + this.sizex/2 ,this.posy + this.sizey/4);
+    ctx.fillText("redelarrer avec le même nom",this.posx + this.sizex/2 ,this.posy + this.sizey/2);
+    ctx.fillText("redemarrer avec un pseudo different",this.posx + this.sizex/2 ,this.posy + this.sizey/2 + fontSize*2);
     ctx.closePath();
   }
 
