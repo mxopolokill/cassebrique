@@ -1,0 +1,19 @@
+17
+10
+6
+00ggggg000ccccc00
+0ggggggg00ccccc00
+0ggggggg0cbwcbwc0
+0g00g00g0cbwcbwc0
+0g0rg0rg0cwwcwwc0
+0g0rg0rg0ccccccc0
+0ggg0ggg0ccccccc0
+0ggg0ggg0ccc0ccc0
+00wgggw00c0c0c0c0
+00wwwww0000000000
+g #E6E6E6
+r #FF0000
+w #FFFFFF
+c #0DEFE4
+b #001FFF
+w #FFFFFF

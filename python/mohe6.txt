@@ -1,0 +1,20 @@
+39
+10
+7
+00bbbb00rrrrrrrr000ooyoo000wrrwwwwrrwwr
+0bggggb0rrr00rrr0yoooyoooy0wrrwwwwrrwwr
+0bggggb0rrr00rrr0yoooyoooy0wrrrrrrrrrrr
+0bBBBBb0rr0ww0rr0yoooyoooy0wrrrrrrrrrrr
+bbBBBBbbrr0ww0rr0yyyyyyyyy0rr00000000rr
+0bybbyb0000ww0000yooy0yooy0rr00000000rr
+0bybbyb0000ww0000yoooyoooy000ww0ww0ww00
+0ggwwgg0www00www0yoooooooy000ww0ww0ww00
+0g0000g0www00www0yyyyyyyyy000ww0ww0ww00
+00000000wwwwwwww0y0000000y000ww0ww0ww00
+b #001FFF
+g #959595
+B #001B98
+y #FFFF00
+w #FFFFFF
+r #FF0000
+o #B25C00

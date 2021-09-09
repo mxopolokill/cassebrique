@@ -1,0 +1,9 @@
+nb_de_lignes
+nb_de_colonnes
+nb_de_couleurs
+aaaabbbbcccc
+aaaabbbbcccc
+aaaabbbbcccc
+a #couleurhexa
+b #couleurhexa
+c #couleurhexa

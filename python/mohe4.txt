@@ -1,0 +1,15 @@
+12
+10
+2
+wrrwwwwrrwwr
+wrrwwwwrrwwr
+wrrrrrrrrrrr
+wrrrrrrrrrrr
+rr00000000rr
+rr00000000rr
+00ww0ww0ww00
+00ww0ww0ww00
+0www0ww0www0
+0www0ww0www0
+w #FFFFFF
+r #FF0000

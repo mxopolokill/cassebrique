@@ -1,0 +1,15 @@
+8
+10
+2
+rrrrrrrr
+rrr00rrr
+rrr00rrr
+rr0ww0rr
+rr0ww0rr
+000ww000
+000ww000
+www00www
+www00www
+wwwwwwww
+w #FFFFFF
+r #FF0000

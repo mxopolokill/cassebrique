@@ -1,0 +1,15 @@
+11
+10
+2
+000bbybb000
+0ybbbybbby0
+0ybbbybbby0
+0ybbbybbby0
+0yyyyyyyyy0
+0ybby0ybby0
+0ybbbybbby0
+0ybbbbbbby0
+0yyyyyyyyy0
+0y0000000y0
+b #B25C00
+y #FFFF00
